@@ -14,6 +14,20 @@ export interface HttpRequestParams {
 export class ClientHttp {
     private readonly apiUrl = API_URL;
 
+    constructor() {
+        this.initAxios();
+    }
+
+    private initAxios() {
+        axios.interceptors.request.use( config => {
+            const token = localStorage.getItem( 'token' );
+            if ( token ) {
+                config.headers.Authorization = `Bearer ${ token }`;
+            }
+            return config;
+        } );
+    }
+
     post<T>( path: string, body: HttpRequestParams ) {
         return this.handleRequest<T>( axios.post<T>( `${ this.apiUrl }/${ path }`, body ) );
     }

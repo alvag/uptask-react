@@ -1,12 +1,16 @@
 import { FC, FormEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Alert, AlertProps } from '@/components';
 import { ApiError } from '@/services/client-http';
 import { login } from '@/services';
+import { useAuth } from '@/hooks';
+import { AuthActions } from '@/context';
 
 interface LoginProps {}
 
 const LoginPage: FC<LoginProps> = () => {
+    const { dispatch } = useAuth();
+    const navigate = useNavigate();
     const [ email, setEmail ] = useState( '' );
     const [ password, setPassword ] = useState( '' );
     const [ alert, setAlert ] = useState<AlertProps | null>( null );
@@ -26,7 +30,11 @@ const LoginPage: FC<LoginProps> = () => {
 
             const { token, user } = await login( email, password );
             localStorage.setItem( 'token', token );
-            console.log( user );
+            dispatch( {
+                type: AuthActions.LOGIN,
+                payload: { user, token },
+            } );
+            navigate( '/projects' );
 
         } catch ( e ) {
             const { message } = e as ApiError;
