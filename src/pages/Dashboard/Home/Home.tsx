@@ -1,29 +1,26 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { useProjects } from '@/hooks';
-import { getProjects } from '@/services';
-import { ProjectsActions } from '@/context';
+import { ProjectsList } from '@/components';
 
 interface HomeProps {}
 
 const HomePage: FC<HomeProps> = () => {
-    const { dispatch } = useProjects();
+    const { projects } = useProjects().state;
 
-    useEffect( () => {
-        getProjects()
-            .then( ( projects ) => {
-                dispatch( {
-                    type: ProjectsActions.SET_PROJECTS,
-                    payload: projects,
-                } );
-            } )
-            .catch( console.log );
-    }, [ dispatch ] );
+    console.log( projects );
+
 
     return (
         <>
             <h1 className="text-4xl font-black">Proyectos</h1>
 
-            <div className=""></div>
+            <div className="bg-white shadow mt-10 rounded-lg">
+                {
+                    projects.length
+                        ? <ProjectsList projects={ projects }/>
+                        : <p className="text-gray-600 uppercase p-5 text-center">Aun no tienes proyectos</p>
+                }
+            </div>
         </>
     );
 };
