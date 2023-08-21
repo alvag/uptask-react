@@ -4,7 +4,11 @@ interface HomeProps {}
 
 const HomePage: FC<HomeProps> = () => {
     return (
-        <div>Home Page</div>
+        <>
+            <h1 className="text-4xl font-black">Proyectos</h1>
+
+            <div className=""></div>
+        </>
     );
 };
 

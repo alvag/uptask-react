@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthLayout, ChangePassword, ConfirmAccount, ForgotPassword, Login, Register } from '@/pages/Auth';
 import { AuthProvider } from '@/context';
-import { DashboardLayout, Home } from '@/pages/Dashboard';
+import { CreateProject, DashboardLayout, Home } from '@/pages/Dashboard';
 
 function App() {
     return (
@@ -17,6 +17,7 @@ function App() {
                     </Route>
                     <Route path="/projects" element={ <DashboardLayout/> }>
                         <Route index element={ <Home/> }/>
+                        <Route path="create" element={ <CreateProject/> }/>
                     </Route>
                 </Routes>
             </AuthProvider>
