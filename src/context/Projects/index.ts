@@ -2,6 +2,7 @@ import { Project } from '@/interfaces';
 
 export enum ProjectsActions {
     SET_PROJECTS = 'SET_PROJECTS',
+    ADD_PROJECT = 'ADD_PROJECT',
 }
 
 export type ActionType = {

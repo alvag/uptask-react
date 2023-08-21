@@ -7,7 +7,12 @@ const reducer = ( state: StateType, { type, payload }: ActionType ): StateType =
         case ProjectsActions.SET_PROJECTS:
             return {
                 ...state,
-                projects: [ ...state.projects, ...payload ],
+                projects: payload,
+            };
+        case ProjectsActions.ADD_PROJECT:
+            return {
+                ...state,
+                projects: [ ...state.projects, payload ],
             };
         default:
             return state;

@@ -8,6 +8,6 @@ export const getProjects = () => {
     return http.get<Project[]>(path);
 };
 
-export default {
-    getProjects,
-}
+export const createProject = ( project: Partial<Project> ) => {
+    return http.post<Project>( path, project );
+};
