@@ -6,6 +6,7 @@ export const Header = () => {
     const { dispatch } = useAuth();
 
     const handleLogout = () => {
+        localStorage.removeItem( 'token' );
         dispatch({
             type: AuthActions.LOGOUT,
         });
