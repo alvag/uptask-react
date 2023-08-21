@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { API_URL } from '@/constants';
 
 export interface ApiError {
@@ -14,10 +14,18 @@ export interface HttpRequestParams {
 export class ClientHttp {
     private readonly apiUrl = API_URL;
 
-    async post<T>( path: string, body: HttpRequestParams ) {
-        return axios.post<T>( `${ this.apiUrl }/${ path }`, body )
+    post<T>( path: string, body: HttpRequestParams ) {
+        return this.handleRequest<T>( axios.post<T>( `${ this.apiUrl }/${ path }`, body ) );
+    }
+
+    get<T>( path: string, params?: HttpRequestParams ) {
+        return this.handleRequest<T>( axios.get<T>( `${ this.apiUrl }/${ path }`, { params } ) );
+    }
+
+    private async handleRequest<T>( axiosPromise: Promise<AxiosResponse<T>> ) {
+        return axiosPromise
             .then( res => res.data )
-            .catch( this.handleError);
+            .catch( this.handleError );
     }
 
     private handleError( error: AxiosError<ApiError> ) {

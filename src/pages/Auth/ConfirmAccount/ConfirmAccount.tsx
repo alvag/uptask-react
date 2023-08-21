@@ -1,11 +1,27 @@
-import { FC } from 'react';
-import { useParams } from 'react-router-dom';
+import { FC, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { confirmAccount } from '@/services';
+import { Alert, AlertProps } from '@/components';
 
 interface ConfirmAccountProps {}
 
 const ConfirmAccountPage: FC<ConfirmAccountProps> = () => {
-    const params = useParams();
-    console.log( params );
+    const [ alert, setAlert ] = useState<AlertProps | null>( null );
+    const { token } = useParams();
+
+    useEffect( () => {
+        confirmAccount( token! )
+            .then( res => {
+                console.log( res );
+                setAlert( {
+                    message: 'Cuenta confirmada correctamente, ya puedes iniciar sesión',
+                    type: 'success',
+                } );
+            } )
+            .catch( error => {
+                setAlert( { message: error.message, type: 'error' } );
+            } );
+    }, [ token ] );
 
 
     return (
@@ -14,6 +30,15 @@ const ConfirmAccountPage: FC<ConfirmAccountProps> = () => {
                 tus { ' ' }
                 <span className="text-slate-700">proyectos</span>
             </h1>
+            { alert && <Alert { ...alert } /> }
+
+
+            { alert && alert.type === 'success' && (
+                <Link to="/" className="block text-center my-5 text-slate-500 uppercase text-sm">
+                    Inicia sesión
+                </Link>
+            ) }
+
         </>
     );
 };
