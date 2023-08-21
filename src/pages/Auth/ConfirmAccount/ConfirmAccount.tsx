@@ -1,8 +1,13 @@
 import { FC } from 'react';
+import { useParams } from 'react-router-dom';
 
 interface ConfirmAccountProps {}
 
 const ConfirmAccountPage: FC<ConfirmAccountProps> = () => {
+    const params = useParams();
+    console.log( params );
+
+
     return (
         <>
             <h1 className="text-sky-600 font-black text-6xl capitalize">Confirma tu cuenta y comienza a crear
