@@ -16,6 +16,16 @@ const reducer = ( state: StateType, { type, payload }: ActionType ): StateType =
                 ...state,
                 projects: [ ...state.projects, payload ],
             };
+        case ProjectsActions.UPDATE_PROJECT:
+            return {
+                ...state,
+                projects: [ ...state.projects.map( ( project ) => project.uid === payload.uid ? payload : project ) ],
+            };
+        case ProjectsActions.DELETE_PROJECT:
+            return {
+                ...state,
+                projects: [ ...state.projects.filter( ( project ) => project.uid !== payload ) ],
+            };
         default:
             return state;
     }

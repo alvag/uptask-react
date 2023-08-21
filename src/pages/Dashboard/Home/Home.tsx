@@ -7,9 +7,6 @@ interface HomeProps {}
 const HomePage: FC<HomeProps> = () => {
     const { projects } = useProjects().state;
 
-    console.log( projects );
-
-
     return (
         <>
             <h1 className="text-4xl font-black">Proyectos</h1>

@@ -32,9 +32,17 @@ export class ClientHttp {
         return this.handleRequest<T>( axios.post<T>( `${ this.apiUrl }/${ path }`, body ) );
     }
 
+    patch<T>( path: string, body: HttpRequestParams ) {
+        return this.handleRequest<T>( axios.patch<T>( `${ this.apiUrl }/${ path }`, body ) );
+    }
+
     get<T>( path: string, params?: HttpRequestParams ) {
         return this.handleRequest<T>( axios.get<T>( `${ this.apiUrl }/${ path }`, { params } ) );
     }
+
+    delete<T>( path: string ) {
+        return this.handleRequest<T>( axios.delete<T>( `${ this.apiUrl }/${ path }` ) );
+    };
 
     private async handleRequest<T>( axiosPromise: Promise<AxiosResponse<T>> ) {
         return axiosPromise

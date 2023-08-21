@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthLayout, ChangePassword, ConfirmAccount, ForgotPassword, Login, Register } from '@/pages/Auth';
 import { AuthProvider, ProjectsProvider } from '@/context';
-import { CreateProject, DashboardLayout, Home, ProjectDetails } from '@/pages/Dashboard';
+import { CreateProject, DashboardLayout, EditProjectPage, Home, ProjectDetails } from '@/pages/Dashboard';
 
 function App() {
     return (
@@ -20,6 +20,7 @@ function App() {
                             <Route index element={ <Home/> }/>
                             <Route path="create" element={ <CreateProject/> }/>
                             <Route path=":uid" element={ <ProjectDetails/> }/>
+                            <Route path=":uid/edit" element={ <EditProjectPage/> }/>
                         </Route>
                     </Routes>
                 </ProjectsProvider>

@@ -1,12 +1,17 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { Alert, AlertProps } from '@/components/Alert.tsx';
 import { ApiError } from '@/services/client-http';
-import { createProject } from '@/services';
+import { createProject, updateProject } from '@/services';
 import { useProjects } from '@/hooks';
 import { ProjectsActions } from '@/context';
 import { useNavigate } from 'react-router-dom';
+import { Project } from '@/interfaces';
 
-export const ProjectForm = () => {
+interface Props {
+    project?: Project;
+}
+
+export const ProjectForm = ( { project }: Props ) => {
     const navigate = useNavigate();
     const { dispatch } = useProjects();
     const [ name, setName ] = useState( '' );
@@ -14,6 +19,17 @@ export const ProjectForm = () => {
     const [ client, setClient ] = useState( '' );
     const [ deadline, setDeadline ] = useState( '' );
     const [ alert, setAlert ] = useState<AlertProps | null>( null );
+
+    useEffect( () => {
+        if ( project ) {
+            const date = project.deadline.toString().split( 'T' )[ 0 ];
+
+            setName( project.name );
+            setDescription( project.description );
+            setClient( project.client );
+            setDeadline( date );
+        }
+    }, [ project ] );
 
     const handleSubmit = async ( e: FormEvent<HTMLFormElement> ) => {
         e.preventDefault();
@@ -36,12 +52,20 @@ export const ProjectForm = () => {
                 deadline: new Date( deadline ),
             };
 
-            const project = await createProject( data );
-            dispatch( {
-                type: ProjectsActions.ADD_PROJECT,
-                payload: project,
-            } );
-
+            if ( project ) {
+                const updatedProject = await updateProject( project.uid, data );
+                dispatch( {
+                    type: ProjectsActions.UPDATE_PROJECT,
+                    payload: updatedProject,
+                } );
+            } else {
+                const newProject = await createProject( data );
+                dispatch( {
+                    type: ProjectsActions.ADD_PROJECT,
+                    payload: newProject,
+                } );
+            }
+            
             navigate( '/projects' );
 
         } catch ( e ) {
@@ -96,7 +120,9 @@ export const ProjectForm = () => {
 
                 <button type="submit"
                         className="w-full mt-10 p-5 bg-sky-600 hover:bg-sky-800 rounded-md text-white font-bold uppercase">
-                    Crear Proyecto
+                    {
+                        project ? 'Editar proyecto' : 'Crear proyecto'
+                    }
                 </button>
             </form>
         </>

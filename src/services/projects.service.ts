@@ -11,3 +11,15 @@ export const getProjects = () => {
 export const createProject = ( project: Partial<Project> ) => {
     return http.post<Project>( path, project );
 };
+
+export const updateProject = ( id: string, project: Partial<Project> ) => {
+    return http.patch<Project>( `${ path }/${ id }`, project );
+};
+
+export const getProject = ( id: string ) => {
+    return http.get<Project>( `${ path }/${ id }` );
+};
+
+export const deleteProject = ( id: string ) => {
+    return http.delete<Project>( `${ path }/${ id }` );
+};
